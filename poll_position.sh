@@ -77,7 +77,7 @@ orderedPaymentList=$(createOrderedPaymentList)
 
 [[ -n $debug ]]&&{ echo -en "Done in $((EPOCHSECONDS-start_time)) seconds.\nFetching DASH price quote..." >&2;start_time=$EPOCHSECONDS;}
 Dash_USD=$(printf '$%0.2f' $(curl -Ls "https://chainz.cryptoid.info/dash/api.dws?q=ticker.usd"))
-
+echo "Dash Price: ${Dash_USD}."
 # Block time in minutes.
 block_time="2.625"
 
@@ -127,7 +127,12 @@ for m in ${MASTERNODES[*]};do
 	timeToReward=$(echo "scale=4;$block_time*$position"|bc)
 	timeToReward=$(formatTime "$timeToReward")
 
-	echo -e "MN ProTxHash (${m:0:4}...${m:60:4}) queue position ${position}/${queue_length}.\tNext payment in ${timeToReward}.\tProgress: $progressBar ${progressPercent}% Balance: $balance Dash 1Dash=$Dash_USD.  $poseMessage"
+	#echo -e "MN ProTxHash (${m:0:4}...${m:60:4}) queue position ${position}/${queue_length}.\tNext payment in ${timeToReward}.\tProgress: $progressBar ${progressPercent}% Balance: $balance Dash 1Dash=$Dash_USD.  $poseMessage"
+	str1="MN ProTxHash (${m:0:4}...${m:60:4}) queue position ${position}/${queue_length}."
+	str2="Next payment in ${timeToReward}."
+	str3="Progress: $progressBar ${progressPercent}%."
+	str4="Balance: ${balance}. $poseMessage"
+	printf "%-53s %-29s %-41s %s\n" "$str1" "$str2" "$str3" "$str4"
 done
 [[ -n $debug ]]&&echo "Done in $((EPOCHSECONDS-start_time)) seconds."
 :
